@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <title>MathSpark Project Website</title>
+    <title>SparkMath Project</title>
     
   <link rel="stylesheet" crossorigin href="./assets/index-d38tg49f.css"><script type="module" crossorigin src="./assets/index-f0h6zvge.js"></script></head>
   <body>
@@ -12,5 +12,70 @@
       data-generated-space-root=""
       data-generated-space-slug="mathspark-project-website"
     ></div>
+    <script>
+    // Patch: update registration section for 2026-2027 and fix library name
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        // 1. Replace the broken registration form with Google Form link
+        var regSection = document.getElementById('register');
+        if (regSection) {
+          var inner = regSection.querySelector('.max-w-xl');
+          if (inner) {
+            inner.innerHTML = '' +
+              '<div class="text-center mb-10">' +
+                '<div class="inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider" style="color:var(--accent)">' +
+                  '<img src="assets/logo.png" alt="SparkMath logo" width="24" height="24" class="inline-block" style="object-fit:contain" />' +
+                  'Get Involved' +
+                '</div>' +
+                '<h2 class="text-2xl sm:text-3xl font-extrabold mt-3">' +
+                  'Register for the <span style="color:var(--gold)">2026\u20132027</span> school year' +
+                '</h2>' +
+                '<p class="text-sm mt-2" style="color:var(--dim)">Join our free weekly math club for grades 3\u20137!</p>' +
+              '</div>' +
+              '<div class="rounded-2xl p-6 sm:p-8 text-center" style="background:var(--bg);border:1px solid var(--border)">' +
+                '<div class="text-4xl mb-4">\u2728</div>' +
+                '<h3 class="text-xl font-extrabold" style="color:var(--accent)">Ready to join SparkMath?</h3>' +
+                '<p class="text-sm mt-2 mb-6 max-w-sm mx-auto" style="color:var(--dim)">' +
+                  'Fill out our quick registration form with your student\'s name, grade, and email. We\'ll send a confirmation with all the details.' +
+                '</p>' +
+                '<div class="space-y-3">' +
+                  '<a href="https://docs.google.com/forms/d/e/1FAIpQLScOfOh2yOKWDbMQriTipEAKx6RgRhhlMEaRQEcBAZrB8QAV1w/viewform" target="_blank" rel="noopener" ' +
+                    'class="inline-flex items-center gap-2 rounded-full px-8 py-3 text-base font-bold text-white shadow-lg transition-transform hover:scale-105" ' +
+                    'style="background:linear-gradient(135deg,#9E7676,#7A5A5A)">' +
+                    'Register Now \u2192' +
+                  '</a>' +
+                '</div>' +
+                '<div class="mt-6 grid sm:grid-cols-2 gap-3 text-left">' +
+                  '<div class="flex items-start gap-3 rounded-xl px-4 py-3" style="border-left:3px solid var(--gold);background:var(--surface)">' +
+                    '<span class="text-xl mt-0.5">\uD83D\uDCC5</span>' +
+                    '<div><div class="text-xs font-bold uppercase" style="color:var(--dim)">When</div><div class="text-sm font-semibold mt-0.5">Every Saturday, 3:30 \u2013 4:30 PM</div></div>' +
+                  '</div>' +
+                  '<div class="flex items-start gap-3 rounded-xl px-4 py-3" style="border-left:3px solid var(--gold);background:var(--surface)">' +
+                    '<span class="text-xl mt-0.5">\uD83D\uDCCD</span>' +
+                    '<div><div class="text-xs font-bold uppercase" style="color:var(--dim)">Where</div><div class="text-sm font-semibold mt-0.5">New Providence Library, NJ</div></div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>';
+          }
+        }
+
+        // 2. Fix "New Providence Memorial Library" -> "New Providence Library" everywhere
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        while (walker.nextNode()) {
+          if (walker.currentNode.nodeValue.indexOf('New Providence Memorial Library') !== -1) {
+            walker.currentNode.nodeValue = walker.currentNode.nodeValue.replace(/New Providence Memorial Library/g, 'New Providence Library');
+          }
+        }
+
+        // 3. Update contact email in footer
+        var footerLinks = document.querySelectorAll('footer div');
+        footerLinks.forEach(function(el) {
+          if (el.textContent.indexOf('contact@mathsparkproject.org') !== -1) {
+            el.textContent = '\u2709\uFE0F sparkmathproject@gmail.com';
+          }
+        });
+      }, 500);
+    });
+    </script>
   </body>
 </html>
