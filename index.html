@@ -15,49 +15,69 @@
     <script>
     (function() {
       function patchSite() {
-        var regSection = document.getElementById('register');
-        if (!regSection) return false;
-        var inner = regSection.querySelector('.max-w-xl');
-        if (!inner) return false;
+        // Wait for the donate section to exist (means React has rendered)
+        var donateSection = document.getElementById('donate');
+        if (!donateSection) return false;
 
-        // Replace registration form
-        inner.innerHTML = '' +
-          '<div class="text-center mb-10">' +
-            '<div class="inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider" style="color:var(--accent)">' +
-              '<img src="assets/logo.png" alt="SparkMath logo" width="24" height="24" class="inline-block" style="object-fit:contain" />' +
-              'Get Involved' +
-            '</div>' +
-            '<h2 class="text-2xl sm:text-3xl font-extrabold mt-3">' +
-              'Register for the <span style="color:var(--gold)">2026\u20132027</span> school year' +
-            '</h2>' +
-            '<p class="text-sm mt-2" style="color:var(--dim)">Join our free weekly math club for grades 3\u20137!</p>' +
-          '</div>' +
-          '<div class="rounded-2xl p-6 sm:p-8 text-center" style="background:var(--bg);border:1px solid var(--border)">' +
-            '<div class="text-4xl mb-4">\u2728</div>' +
-            '<h3 class="text-xl font-extrabold" style="color:var(--accent)">Ready to join SparkMath?</h3>' +
-            '<p class="text-sm mt-2 mb-6 max-w-sm mx-auto" style="color:var(--dim)">' +
-              'Fill out our quick registration form with your student\'s name, grade, and email. We\'ll send a confirmation with all the details.' +
-            '</p>' +
-            '<div class="space-y-3">' +
-              '<a href="https://docs.google.com/forms/d/e/1FAIpQLScOfOh2yOKWDbMQriTipEAKx6RgRhhlMEaRQEcBAZrB8QAV1w/viewform" target="_blank" rel="noopener" ' +
-                'class="inline-flex items-center gap-2 rounded-full px-8 py-3 text-base font-bold text-white shadow-lg transition-transform hover:scale-105" ' +
-                'style="background:linear-gradient(135deg,#9E7676,#7A5A5A)">' +
-                'Register Now \u2192' +
-              '</a>' +
-            '</div>' +
-            '<div class="mt-6 grid sm:grid-cols-2 gap-3 text-left">' +
-              '<div class="flex items-start gap-3 rounded-xl px-4 py-3" style="border-left:3px solid var(--gold);background:var(--surface)">' +
-                '<span class="text-xl mt-0.5">\uD83D\uDCC5</span>' +
-                '<div><div class="text-xs font-bold uppercase" style="color:var(--dim)">When</div><div class="text-sm font-semibold mt-0.5">Every Saturday, 3:30 \u2013 4:30 PM</div></div>' +
+        // 1. Create and insert the registration section before Donate
+        var regSection = document.createElement('section');
+        regSection.id = 'register';
+        regSection.className = 'py-16 sm:py-24 px-5';
+        regSection.style.background = 'linear-gradient(135deg, var(--purple-50) 0%, var(--orange-50) 50%, var(--teal-50) 100%)';
+        regSection.innerHTML = '' +
+          '<div class="max-w-xl mx-auto">' +
+            '<div class="text-center mb-10">' +
+              '<div class="inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider" style="color:var(--accent)">' +
+                '<img src="assets/logo.png" alt="SparkMath logo" width="24" height="24" class="inline-block" style="object-fit:contain" />' +
+                ' Get Involved' +
               '</div>' +
-              '<div class="flex items-start gap-3 rounded-xl px-4 py-3" style="border-left:3px solid var(--gold);background:var(--surface)">' +
-                '<span class="text-xl mt-0.5">\uD83D\uDCCD</span>' +
-                '<div><div class="text-xs font-bold uppercase" style="color:var(--dim)">Where</div><div class="text-sm font-semibold mt-0.5">New Providence Library, NJ</div></div>' +
+              '<h2 class="text-2xl sm:text-3xl font-extrabold mt-3">' +
+                'Register for the <span style="color:var(--gold)">2026\u20132027</span> school year' +
+              '</h2>' +
+              '<p class="text-sm mt-2" style="color:var(--dim)">Join our free weekly math club for grades 3\u20137!</p>' +
+            '</div>' +
+            '<div class="rounded-2xl p-6 sm:p-8 text-center" style="background:var(--bg);border:1px solid var(--border)">' +
+              '<div class="text-4xl mb-4">\u2728</div>' +
+              '<h3 class="text-xl font-extrabold" style="color:var(--accent)">Ready to join SparkMath?</h3>' +
+              '<p class="text-sm mt-2 mb-6 max-w-sm mx-auto" style="color:var(--dim)">' +
+                'Fill out our quick registration form with your student\'s name, grade, and email. We\'ll send a confirmation with all the details.' +
+              '</p>' +
+              '<div class="space-y-3">' +
+                '<a href="https://docs.google.com/forms/d/e/1FAIpQLScOfOh2yOKWDbMQriTipEAKx6RgRhhlMEaRQEcBAZrB8QAV1w/viewform" target="_blank" rel="noopener" ' +
+                  'class="inline-flex items-center gap-2 rounded-full px-8 py-3 text-base font-bold text-white shadow-lg transition-transform hover:scale-105" ' +
+                  'style="background:linear-gradient(135deg,#9E7676,#7A5A5A)">' +
+                  'Register Now \u2192' +
+                '</a>' +
+              '</div>' +
+              '<div class="mt-6 grid sm:grid-cols-2 gap-3 text-left">' +
+                '<div class="flex items-start gap-3 rounded-xl px-4 py-3" style="border-left:3px solid var(--gold);background:var(--surface)">' +
+                  '<span class="text-xl mt-0.5">\uD83D\uDCC5</span>' +
+                  '<div><div class="text-xs font-bold uppercase" style="color:var(--dim)">When</div><div class="text-sm font-semibold mt-0.5">Every Saturday, 3:30 \u2013 4:30 PM</div></div>' +
+                '</div>' +
+                '<div class="flex items-start gap-3 rounded-xl px-4 py-3" style="border-left:3px solid var(--gold);background:var(--surface)">' +
+                  '<span class="text-xl mt-0.5">\uD83D\uDCCD</span>' +
+                  '<div><div class="text-xs font-bold uppercase" style="color:var(--dim)">Where</div><div class="text-sm font-semibold mt-0.5">New Providence Library, NJ</div></div>' +
+                '</div>' +
               '</div>' +
             '</div>' +
           '</div>';
+        donateSection.parentNode.insertBefore(regSection, donateSection);
 
-        // Fix library name everywhere
+        // 2. Add "Register" link to the nav bar
+        var navLinks = document.querySelector('nav .hidden.sm\\:flex');
+        if (navLinks) {
+          // Find the last donate button and add Register before it
+          var links = navLinks.querySelectorAll('a');
+          var lastLink = links[links.length - 1];
+          var regLink = document.createElement('a');
+          regLink.href = '#register';
+          regLink.className = 'hover:text-[var(--accent)] transition-colors rounded-full px-4 py-1.5 text-white';
+          regLink.style.background = 'var(--accent)';
+          regLink.textContent = 'Register';
+          navLinks.insertBefore(regLink, lastLink);
+        }
+
+        // 3. Fix "New Providence Memorial Library" -> "New Providence Library"
         var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
         while (walker.nextNode()) {
           if (walker.currentNode.nodeValue.indexOf('New Providence Memorial Library') !== -1) {
@@ -65,22 +85,31 @@
           }
         }
 
-        // Fix contact email in footer
+        // 4. Fix contact email in footer
         var footerDivs = document.querySelectorAll('footer div');
         footerDivs.forEach(function(el) {
-          if (el.textContent.indexOf('contact@mathsparkproject.org') !== -1) {
+          if (el.childNodes.length === 1 && el.textContent.indexOf('contact@mathsparkproject.org') !== -1) {
             el.textContent = '\u2709\uFE0F sparkmathproject@gmail.com';
+          }
+        });
+
+        // 5. Update hero "Support Us" button to "Join Us" linking to register
+        var heroLinks = document.querySelectorAll('a[href="#donate"]');
+        heroLinks.forEach(function(el) {
+          if (el.textContent.trim().indexOf('Support Us') !== -1) {
+            el.href = '#register';
+            el.innerHTML = 'Join Us <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
           }
         });
 
         return true;
       }
 
-      // Poll until React has rendered the page
+      // Poll until React has rendered
       var attempts = 0;
       var timer = setInterval(function() {
         attempts++;
-        if (patchSite() || attempts > 40) {
+        if (patchSite() || attempts > 60) {
           clearInterval(timer);
         }
       }, 250);
