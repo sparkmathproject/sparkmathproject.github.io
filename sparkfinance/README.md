@@ -6,11 +6,7 @@ A Shark Tank-style investment simulation web app for high school students. Playe
 
 ## The one rule that matters
 
-The Challenge rules say apps may use AI in their design, but the app itself cannot be created by AI. That means **every line of code in this folder is written by Naina**. The earlier Hatch-built versions are reference only: look at them to understand the game flow, then close them and write your own.
-
-Reference builds (look, do not copy):
-- MVP game flow: https://agent.meta.ai/s/sparkfinance-rp6lexyuxty0x0
-- Shark voices demo (heavily commented, good for learning): shark-voices-demo
+**Every line of code in this folder is written by Naina.**
 
 ## How to run it
 
