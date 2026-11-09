@@ -78,6 +78,16 @@
           storiesLink.href = '#testimonials';
           storiesLink.className = 'hover:text-[var(--accent)] transition-colors';
           storiesLink.textContent = 'Stories';
+          var learnedLink = document.createElement('a');
+          learnedLink.href = '#learned';
+          learnedLink.className = 'hover:text-[var(--accent)] transition-colors';
+          learnedLink.textContent = 'Learned';
+          var faqLink = document.createElement('a');
+          faqLink.href = '#faq';
+          faqLink.className = 'hover:text-[var(--accent)] transition-colors';
+          faqLink.textContent = 'FAQ';
+          navLinks.insertBefore(learnedLink, regLink);
+          navLinks.insertBefore(faqLink, regLink);
           navLinks.insertBefore(storiesLink, regLink);
           navLinks.insertBefore(regLink, lastLink);
         }
@@ -175,6 +185,133 @@
             el.innerHTML = 'Join Us <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
           }
         });
+
+
+        // 7. Next session countdown, before the Schedule section
+        var schedSection = document.getElementById('schedule');
+        if (schedSection) {
+          var cdSection = document.createElement('section');
+          cdSection.id = 'countdown';
+          cdSection.className = 'py-12 sm:py-16 px-5';
+          cdSection.innerHTML = '' +
+            '<div class="max-w-3xl mx-auto text-center">' +
+              '<div class="inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider" style="color:var(--accent)">' +
+                '<img src="assets/logo.png" alt="SparkMath logo" width="24" height="24" class="inline-block" style="object-fit:contain" />' +
+                ' Next Session' +
+              '</div>' +
+              '<h2 class="text-2xl sm:text-3xl font-extrabold mt-3">See you at the <span style="color:var(--gold)">next session</span></h2>' +
+              '<p id="countdown-date" class="text-base font-semibold mt-3" style="color:var(--dim)"></p>' +
+              '<div class="mt-6 flex justify-center gap-3 sm:gap-4">' +
+                '<div class="rounded-2xl px-4 py-3 w-20" style="background:var(--surface);border:1px solid var(--border)"><div id="cd-days" class="text-2xl sm:text-3xl font-extrabold" style="color:var(--gold)">--</div><div class="text-xs font-bold uppercase mt-1" style="color:var(--dim)">Days</div></div>' +
+                '<div class="rounded-2xl px-4 py-3 w-20" style="background:var(--surface);border:1px solid var(--border)"><div id="cd-hours" class="text-2xl sm:text-3xl font-extrabold" style="color:var(--gold)">--</div><div class="text-xs font-bold uppercase mt-1" style="color:var(--dim)">Hours</div></div>' +
+                '<div class="rounded-2xl px-4 py-3 w-20" style="background:var(--surface);border:1px solid var(--border)"><div id="cd-mins" class="text-2xl sm:text-3xl font-extrabold" style="color:var(--gold)">--</div><div class="text-xs font-bold uppercase mt-1" style="color:var(--dim)">Minutes</div></div>' +
+              '</div>' +
+              '<p class="text-sm mt-4" style="color:var(--dim)">2nd and 4th Sundays, 3:30 to 4:30 PM at New Providence Library.</p>' +
+              '<a href="#register" class="mt-5 inline-flex items-center gap-2 rounded-full px-7 py-3 text-base font-bold text-white shadow-lg transition-transform hover:scale-105" style="background:linear-gradient(135deg, var(--accent), #7A5A5A)">Register for the next session</a>' +
+            '</div>';
+          schedSection.parentNode.insertBefore(cdSection, schedSection);
+          var updateCountdown = function(){
+            var now = new Date();
+            var next = null;
+            for (var m = 0; m < 4 && !next; m++) {
+              var base = new Date(now.getFullYear(), now.getMonth() + m, 1);
+              var firstDow = base.getDay();
+              var firstSun = 1 + ((7 - firstDow) % 7);
+              [firstSun + 7, firstSun + 21].forEach(function(day){
+                if (next) return;
+                var d = new Date(base.getFullYear(), base.getMonth(), day, 15, 30, 0);
+                if (d.getTime() > now.getTime()) next = d;
+              });
+            }
+            if (!next) return;
+            var dateEl = document.getElementById('countdown-date');
+            if (dateEl) dateEl.textContent = 'Sunday, ' + next.toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'}) + ', 3:30 to 4:30 PM';
+            var diff = next.getTime() - now.getTime();
+            var set = function(id, v){ var el = document.getElementById(id); if (el) el.textContent = v; };
+            set('cd-days', Math.floor(diff / 86400000));
+            set('cd-hours', Math.floor(diff % 86400000 / 3600000));
+            set('cd-mins', Math.floor(diff % 3600000 / 60000));
+          };
+          updateCountdown();
+          setInterval(updateCountdown, 60000);
+        }
+
+        // 8. What We Learned This Week, before the Register section
+        var learnedSection = document.createElement('section');
+        learnedSection.id = 'learned';
+        learnedSection.className = 'py-16 sm:py-24 px-5';
+        learnedSection.style.background = 'var(--surface)';
+        learnedSection.innerHTML = '' +
+          '<div class="max-w-3xl mx-auto">' +
+            '<div class="text-center mb-10">' +
+              '<div class="inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider" style="color:var(--accent)">' +
+                '<img src="assets/logo.png" alt="SparkMath logo" width="24" height="24" class="inline-block" style="object-fit:contain" />' +
+                ' What We Learned' +
+              '</div>' +
+              '<h2 class="text-2xl sm:text-3xl font-extrabold mt-3">What we learned <span style="color:var(--gold)">this week</span></h2>' +
+              '<p class="text-sm mt-2" style="color:var(--dim)">A short recap after each session, so families can see what the kids practiced.</p>' +
+            '</div>' +
+            '<div class="space-y-6">' +
+              '<article class="rounded-2xl p-6 sm:p-8" style="background:var(--bg);border:1px solid var(--border)">' +
+                '<span class="inline-block text-[11px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full" style="background:var(--gold-50);color:var(--gold)">November 8, 2026</span>' +
+                '<h3 class="text-xl font-extrabold mt-2">Variables</h3>' +
+                '<p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">This week we learned about variables, the letters that stand for numbers we do not know yet. Students practiced finding the missing number in equations like x + 7 = 9 and 2x + 10 = 20, and by the end they could solve for x and y on their own.</p>' +
+                '<div class="mt-4 flex flex-wrap gap-2">' +
+                  '<span class="rounded-full px-3 py-1 text-sm font-bold" style="background:var(--gold-50);color:var(--gold);border:1px solid var(--gold)">x + 7 = 9, so x = 2</span>' +
+                  '<span class="rounded-full px-3 py-1 text-sm font-bold" style="background:var(--gold-50);color:var(--gold);border:1px solid var(--gold)">2x = 8, so x = 4</span>' +
+                  '<span class="rounded-full px-3 py-1 text-sm font-bold" style="background:var(--gold-50);color:var(--gold);border:1px solid var(--gold)">2x + 10 = 20, so x = 5</span>' +
+                  '<span class="rounded-full px-3 py-1 text-sm font-bold" style="background:var(--gold-50);color:var(--gold);border:1px solid var(--gold)">3y + 1 = 4, so y = 1</span>' +
+                '</div>' +
+              '</article>' +
+              '<article class="rounded-2xl p-6 sm:p-8" style="background:var(--bg);border:1px solid var(--border)">' +
+                '<span class="inline-block text-[11px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full" style="background:var(--gold-50);color:var(--gold)">October 25, 2026</span>' +
+                '<h3 class="text-xl font-extrabold mt-2">Equations and Word Problems</h3>' +
+                '<p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">We reviewed variables, equations, and expressions, starting with x + 2 = 5, so x = 3. Students practiced solving basic equations, then tried word problems, stories that turn into equations. For example, Bobcat and Bobbycat eat 12 pounds of food a day, and Bobcat eats twice as much as Bobbycat, so Bobbycat eats 4 pounds a day. One apple makes 8 slices and feeds Robertio the mouse for 4 days, so he eats 2 slices a day.</p>' +
+                '<div class="mt-4 flex flex-wrap gap-2">' +
+                  '<span class="rounded-full px-3 py-1 text-sm font-bold" style="background:var(--gold-50);color:var(--gold);border:1px solid var(--gold)">x + 2 = 5, so x = 3</span>' +
+                  '<span class="rounded-full px-3 py-1 text-sm font-bold" style="background:var(--gold-50);color:var(--gold);border:1px solid var(--gold)">Bobbycat eats 4 pounds a day</span>' +
+                  '<span class="rounded-full px-3 py-1 text-sm font-bold" style="background:var(--gold-50);color:var(--gold);border:1px solid var(--gold)">Robertio eats 2 slices a day</span>' +
+                '</div>' +
+              '</article>' +
+            '</div>' +
+            '<p class="text-sm text-center mt-6" style="color:var(--dim)">New entries will be added here after each session.</p>' +
+          '</div>';
+        donateSection.parentNode.insertBefore(learnedSection, regSection);
+
+        // 9. Parent FAQ, before the Register section
+        var faqSection = document.createElement('section');
+        faqSection.id = 'faq';
+        faqSection.className = 'py-16 sm:py-24 px-5';
+        faqSection.innerHTML = '' +
+          '<div class="max-w-3xl mx-auto">' +
+            '<div class="text-center mb-10">' +
+              '<div class="inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider" style="color:var(--accent)">' +
+                '<img src="assets/logo.png" alt="SparkMath logo" width="24" height="24" class="inline-block" style="object-fit:contain" />' +
+                ' For Parents' +
+              '</div>' +
+              '<h2 class="text-2xl sm:text-3xl font-extrabold mt-3">Questions parents <span style="color:var(--gold)">ask us</span></h2>' +
+            '</div>' +
+            '<div class="space-y-3">' +
+              '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">Is SparkMath free?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">Yes. Every session is completely free.</p></details>' +
+              '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">What grades is it for?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">SparkMath is for students in 4th to 6th grade.</p></details>' +
+              '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">When and where does it meet?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">We meet on the 2nd and 4th Sundays of the month, 3:30 to 4:30 PM, at New Providence Library in New Jersey.</p></details>' +
+              '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">Does my child need to know anything first?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">No. There are no prerequisites. The material is at a high 5th grade level, and we explain every new idea from the start.</p></details>' +
+              '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">How do we sign up?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">Register through the SparkMath registration form: <a href="https://forms.gle/eW95bLzfteL2mB9VA" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">SparkMath registration form</a>. You can also register on the New Providence Library calendar.</p></details>' +
+              '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">What should my child bring?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">Just a pencil and paper. Nothing else is needed.</p></details>' +
+            '</div>' +
+          '</div>';
+        donateSection.parentNode.insertBefore(faqSection, regSection);
+
+        // 10. Summer bootcamp coming soon banner, before the Mission section
+        var missionSection = document.getElementById('mission');
+        if (missionSection) {
+          var bootBanner = document.createElement('div');
+          bootBanner.className = 'px-5 py-4 text-center';
+          bootBanner.style.background = 'var(--gold-50)';
+          bootBanner.style.borderBottom = '1px solid var(--gold)';
+          bootBanner.innerHTML = '<p class="text-sm sm:text-base font-bold" style="color:var(--gold)">Coming soon: look out for a bootcamp in the summer. Details will be shared here.</p>';
+          missionSection.parentNode.insertBefore(bootBanner, missionSection);
+        }
 
         return true;
       }
