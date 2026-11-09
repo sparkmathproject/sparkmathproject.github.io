@@ -18,6 +18,8 @@
         // Wait for the donate section to exist (means React has rendered)
         var donateSection = document.getElementById('donate');
         if (!donateSection) return false;
+        // Already patched (e.g. this ran twice): never insert sections again
+        if (document.getElementById('register')) return true;
 
         // 1. Create and insert the registration section before Donate
         var regSection = document.createElement('section');
@@ -43,7 +45,7 @@
                 'Register through the New Providence Library calendar. Registration is required and covers all sessions for the season.' +
               '</p>' +
               '<div class="space-y-3">' +
-                '<a href="https://newprovidence.librarycalendar.com/event/teens-teaching-math-club-7201" target="_blank" rel="noopener" ' +
+                '<a href="https://newprovidence.librarycalendar.com/event/teens-teaching-math-club-7204" target="_blank" rel="noopener" ' +
                   'class="inline-flex items-center gap-2 rounded-full px-8 py-3 text-base font-bold text-white shadow-lg transition-transform hover:scale-105" ' +
                   'style="background:linear-gradient(135deg,#9E7676,#7A5A5A)">' +
                   'Register Now \u2192' +
@@ -86,10 +88,10 @@
           faqLink.href = '#faq';
           faqLink.className = 'hover:text-[var(--accent)] transition-colors';
           faqLink.textContent = 'FAQ';
+          navLinks.insertBefore(regLink, lastLink);
           navLinks.insertBefore(learnedLink, regLink);
           navLinks.insertBefore(faqLink, regLink);
           navLinks.insertBefore(storiesLink, regLink);
-          navLinks.insertBefore(regLink, lastLink);
         }
 
         // 6. Testimonials section at the end, after Donate
@@ -296,7 +298,7 @@
               '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">What grades is it for?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">SparkMath is for students in 4th to 6th grade.</p></details>' +
               '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">When and where does it meet?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">We meet on the 2nd and 4th Sundays of the month, 3:30 to 4:30 PM, at New Providence Library in New Jersey.</p></details>' +
               '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">Does my child need to know anything first?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">No. There are no prerequisites. The material is at a high 5th grade level, and we explain every new idea from the start.</p></details>' +
-              '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">How do we sign up?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">Register through the SparkMath registration form: <a href="https://forms.gle/eW95bLzfteL2mB9VA" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">SparkMath registration form</a>. You can also register on the New Providence Library calendar.</p></details>' +
+              '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">How do we sign up?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">Register on the New Providence Library calendar: <a href="https://newprovidence.librarycalendar.com/event/teens-teaching-math-club-7204" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">Teens Teaching: Math Club, Nov 22 session</a>. One registration covers all sessions for the season.</p></details>' +
               '<details class="rounded-2xl p-5" style="background:var(--surface);border:1px solid var(--border)"><summary class="font-bold cursor-pointer">What should my child bring?</summary><p class="text-[15px] leading-7 mt-2" style="color:var(--dim)">Just a pencil and paper. Nothing else is needed.</p></details>' +
             '</div>' +
           '</div>';
@@ -320,7 +322,11 @@
       var attempts = 0;
       var timer = setInterval(function() {
         attempts++;
-        if (patchSite() || attempts > 60) {
+        try {
+          if (patchSite() || attempts > 60) {
+            clearInterval(timer);
+          }
+        } catch (e) {
           clearInterval(timer);
         }
       }, 250);
