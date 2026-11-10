@@ -313,11 +313,14 @@
         // 10. Summer bootcamp coming soon banner, before the Mission section
         var missionSection = document.getElementById('mission');
         if (missionSection) {
+          var bootStyle = document.createElement('style');
+          bootStyle.textContent = '@keyframes bootcamp-sway { 0%, 100% { transform: translateX(-10px); } 50% { transform: translateX(10px); } } .bootcamp-sway { display: inline-block; animation: bootcamp-sway 2.2s ease-in-out infinite; }';
+          document.head.appendChild(bootStyle);
           var bootBanner = document.createElement('div');
           bootBanner.className = 'px-5 py-4 text-center';
-          bootBanner.style.background = 'var(--gold-50)';
+          bootBanner.style.background = 'linear-gradient(90deg, var(--gold-50), #fffbe6, var(--gold-50))';
           bootBanner.style.borderBottom = '1px solid var(--gold)';
-          bootBanner.innerHTML = '<p class="text-sm sm:text-base font-bold" style="color:var(--gold)">Coming soon: look out for a bootcamp in the summer. Details will be shared here.</p>';
+          bootBanner.innerHTML = '<p class="bootcamp-sway text-sm sm:text-base font-bold" style="color:var(--gold);text-shadow:0 1px 0 rgba(255,255,255,0.7)">\u2728 Coming soon: look out for a bootcamp in the summer. Details will be shared here. \u2728</p>';
           missionSection.parentNode.insertBefore(bootBanner, missionSection);
         }
 
