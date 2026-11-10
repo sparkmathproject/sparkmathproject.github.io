@@ -321,6 +321,24 @@
           missionSection.parentNode.insertBefore(bootBanner, missionSection);
         }
 
+        // 11. Make the "Weekly Sessions" stat box (next to 50+ Kids Taught) a link to What We Learned
+        var statTiles = document.querySelectorAll('#mission .grid > div');
+        statTiles.forEach(function(tile) {
+          if (tile.textContent.indexOf('Weekly') !== -1 && tile.textContent.indexOf('Sessions') !== -1) {
+            tile.style.cursor = 'pointer';
+            tile.setAttribute('title', 'See what we covered in past sessions');
+            var cap = document.createElement('div');
+            cap.className = 'text-xs font-bold mt-1';
+            cap.style.color = 'var(--accent)';
+            cap.textContent = 'See what we covered \u2192';
+            tile.appendChild(cap);
+            tile.addEventListener('click', function() {
+              var target = document.getElementById('learned');
+              if (target) target.scrollIntoView({behavior: 'smooth'});
+            });
+          }
+        });
+
         return true;
       }
 
