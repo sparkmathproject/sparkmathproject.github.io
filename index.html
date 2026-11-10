@@ -236,6 +236,12 @@
           };
           updateCountdown();
           setInterval(updateCountdown, 60000);
+          // Link from the Weekly sessions box to What We Learned below
+          var sessionsLink = document.createElement('p');
+          sessionsLink.style.textAlign = 'center';
+          sessionsLink.style.marginTop = '1.5rem';
+          sessionsLink.innerHTML = '<a href="#learned" style="color:var(--accent);font-weight:700">See what we covered in past sessions \u2192</a>';
+          schedSection.appendChild(sessionsLink);
         }
 
         // 8. What We Learned This Week, before the Register section
